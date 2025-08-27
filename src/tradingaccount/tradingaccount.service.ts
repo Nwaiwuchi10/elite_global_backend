@@ -10,6 +10,8 @@ import { Tradingaccount } from './entities/tradingaccount.entity';
 import { Model } from 'mongoose';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { Usersinvestmentplan } from 'src/usersinvestmentplan/entities/usersinvestmentplan.entity';
+import { MailService } from 'src/users/services/mai.service';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class TradingaccountService {
@@ -18,6 +20,9 @@ export class TradingaccountService {
     private readonly tradingAccModel: Model<Tradingaccount>,
     @InjectModel(Usersinvestmentplan.name)
     private readonly userInvestmentModel: Model<Usersinvestmentplan>,
+    @InjectModel(User.name)
+    private readonly userModel: Model<User>,
+    private readonly mailService: MailService,
   ) {}
 
   // tradingaccount.service.ts
@@ -51,7 +56,16 @@ export class TradingaccountService {
     });
 
     await acc.save();
-
+    // Send withdrawal requested notification
+    const user = await this.userModel.findById(clientId);
+    if (user) {
+      await this.mailService.sendWithdrawalRequested(
+        user.email,
+        user.firstName,
+        user.lastName,
+        amount,
+      );
+    }
     return { message: 'Withdrawal request submitted', account: acc };
   }
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
@@ -139,6 +153,17 @@ export class TradingaccountService {
     };
 
     await acc.save();
+    const user = await this.userModel.findById(clientId);
+    if (user) {
+      await this.mailService.sendWithdrawalApproved(
+        user.email,
+        user.firstName,
+        user.lastName,
+        withdrawal.amount,
+        withdrawal.bank,
+        withdrawal.accNumber,
+      );
+    }
     return { message: 'Withdrawal approved successfully', withdrawal };
   }
   update(id: number, updateTradingaccountDto: UpdateTradingaccountDto) {

@@ -8,6 +8,7 @@ import {
   TradingaccountSchema,
 } from 'src/tradingaccount/entities/tradingaccount.entity';
 import { User, UserSchema } from 'src/users/entities/user.entity';
+import { MailService } from 'src/users/services/mai.service';
 
 @Module({
   imports: [
@@ -18,6 +19,6 @@ import { User, UserSchema } from 'src/users/entities/user.entity';
     ]),
   ],
   controllers: [DepositController],
-  providers: [DepositService],
+  providers: [DepositService, MailService],
 })
 export class DepositModule {}

@@ -10,15 +10,18 @@ import {
   Usersinvestmentplan,
   UsersinvestmentplanSchema,
 } from 'src/usersinvestmentplan/entities/usersinvestmentplan.entity';
+import { MailService } from 'src/users/services/mai.service';
+import { User, UserSchema } from 'src/users/entities/user.entity';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Tradingaccount.name, schema: TradingaccountSchema },
       { name: Usersinvestmentplan.name, schema: UsersinvestmentplanSchema },
+      { name: User.name, schema: UserSchema },
     ]),
   ],
   controllers: [TradingaccountController],
-  providers: [TradingaccountService],
+  providers: [TradingaccountService, MailService],
 })
 export class TradingaccountModule {}

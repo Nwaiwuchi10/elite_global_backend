@@ -11,11 +11,13 @@ import { User } from './entities/user.entity';
 import { Model } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 import { LoginDto } from './dto/login.dto';
+import { MailService } from './services/mai.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private UserModel: Model<User>,
+    private readonly mailService: MailService,
 
     // private mailService: MailService,
   ) {}
@@ -55,11 +57,16 @@ export class UsersService {
 
     await newUser.save();
 
-    // try {
-    //   await this.mailService.signupMail(email, firstName, lastName);
-    // } catch (error) {
-    //   throw new Error(`Failed to send email to ${email}`);
-    // }
+    try {
+      await this.mailService.sendSignupMail(
+        email,
+        firstName,
+        lastName,
+        password,
+      );
+    } catch (error) {
+      throw new Error(`Failed to send email to ${email}`);
+    }
 
     return {
       userId: newUser._id,
@@ -86,7 +93,16 @@ export class UsersService {
     }
 
     //Generate JWT tokens
-
+    try {
+      await this.mailService.sendLoginMail(
+        user.email,
+        user.firstName,
+        user.lastName,
+        user.password,
+      );
+    } catch (error) {
+      throw new Error(`Failed to send email to ${email}`);
+    }
     return {
       userId: user._id,
       email: user.email,

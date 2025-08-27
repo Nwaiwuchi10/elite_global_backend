@@ -10,6 +10,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Tradingaccount } from 'src/tradingaccount/entities/tradingaccount.entity';
 import { User } from 'src/users/entities/user.entity';
+import { MailService } from 'src/users/services/mai.service';
 
 @Injectable()
 export class DepositService {
@@ -18,6 +19,7 @@ export class DepositService {
     @InjectModel(Tradingaccount.name)
     private tradingAccountModel: Model<Tradingaccount>,
     @InjectModel(User.name) private userModel: Model<User>,
+    private readonly mailService: MailService,
   ) {}
 
   async create(createDepositDto: CreateDepositDto): Promise<Deposit> {
@@ -27,7 +29,18 @@ export class DepositService {
       );
     }
     const deposit = new this.depositModel(createDepositDto);
-    return deposit.save();
+
+    await deposit.save();
+    const user = await this.userModel.findById(deposit.clientId);
+    if (user) {
+      await this.mailService.sendDepositCreated(
+        user.email,
+        user.firstName,
+        user.lastName,
+        deposit.amount,
+      );
+    }
+    return deposit;
   }
 
   async findAll(): Promise<Deposit[]> {
@@ -120,7 +133,15 @@ export class DepositService {
         await refTradingAcc.save();
       }
     }
-
+    // Send deposit approved notification
+    if (user) {
+      await this.mailService.sendDepositApproved(
+        user.email,
+        user.firstName,
+        user.lastName,
+        deposit.amount,
+      );
+    }
     // 5. Final response
     return {
       message: 'Deposit approved & Trading account updated',
