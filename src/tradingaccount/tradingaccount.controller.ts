@@ -89,4 +89,47 @@ export class TradingaccountController {
   remove(@Param('id') id: string) {
     return this.tradingaccountService.remove(+id);
   }
+
+  // @Patch(':id/debit')
+  // debit(@Param('id') id: string, @Body('amount') amount: number) {
+  //   return this.tradingaccountService.debit(id, amount);
+  // }
+
+  @Patch(':userId/credit')
+  credit(@Param('userId') userId: string, @Body('amount') amount: number) {
+    return this.tradingaccountService.credit(userId, amount);
+  }
+
+  @Patch(':userId/earned-fund')
+  updateEarnedFund(
+    @Param('userId') userId: string,
+    @Body() dto: { amount: number; add?: boolean },
+  ) {
+    return this.tradingaccountService.updateEarnedFund(
+      userId,
+      dto.amount,
+      dto.add ?? true,
+    );
+  }
+
+  @Get(':id/transactions')
+  transactions(@Param('id') id: string) {
+    return this.tradingaccountService.getTransactions(id);
+  }
+  @Get('summary/:userId')
+  async getUserSummary(@Param('userId') userId: string) {
+    return this.tradingaccountService.getUserDepositWithdrawalSummary(userId);
+  }
+
+  @Get('user/:userId/withdrawals/all')
+  async getUserWithdrawalsMain(@Param('userId') userId: string) {
+    return this.tradingaccountService.getUserWithdrawals(userId);
+  }
+  @Patch(':userId/reduce-earnedfund')
+  async reduceEarnedFund(
+    @Param('userId') userId: string,
+    @Body('amount') amount: number,
+  ) {
+    return this.tradingaccountService.reduceEarnedFund(userId, amount);
+  }
 }

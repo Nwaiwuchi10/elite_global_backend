@@ -111,6 +111,7 @@ export class UsersService {
       lastName: user.lastName,
       password: user.password,
       country: user.country,
+      isAdmin: user.isAdmin,
     };
   }
 
@@ -144,4 +145,62 @@ export class UsersService {
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
+
+  async blockUser(id: string) {
+    return this.UserModel.findByIdAndUpdate(
+      id,
+      { isBlocked: true },
+      { new: true },
+    );
+  }
+
+  async updateReferralBalance(id: string, amount: number) {
+    return this.UserModel.findByIdAndUpdate(
+      id,
+      { referralBalance: amount },
+      { new: true },
+    );
+  }
+
+  async updateReferralCount(id: string, count: number) {
+    return this.UserModel.findByIdAndUpdate(
+      id,
+      { referralCount: count },
+      { new: true },
+    );
+  }
+
+  async getUserReferrals(id: string) {
+    const user = await this.UserModel.findById(id);
+    if (!user) throw new NotFoundException('User not found');
+    return this.UserModel.find({ referredBy: user.referralCode });
+  }
+
+  async changePasswordJege(id: string, oldPass: string, newPass: string) {
+    const user = await this.UserModel.findById(id);
+    if (!user) throw new NotFoundException('User not found');
+
+    // ✅ check old password directly
+    if (user.password !== oldPass) {
+      throw new BadRequestException('Invalid old password');
+    }
+
+    user.password = newPass;
+    return user.save();
+  }
+  async resetPasswordJege(id: string, newPass: string) {
+    const user = await this.UserModel.findById(id);
+    if (!user) throw new NotFoundException('User not found');
+
+    user.password = newPass;
+    return user.save();
+  }
+  // async changePassword(id: string, oldPass: string, newPass: string) {
+  //   const user = await this.UserModel.findById(id);
+  //   if (!user) throw new NotFoundException('User not found');
+  //   const valid = await bcrypt.compare(oldPass, user.password);
+  //   if (!valid) throw new BadRequestException('Invalid old password');
+  //   user.password = await bcrypt.hash(newPass, 10);
+  //   return user.save();
+  // }
 }

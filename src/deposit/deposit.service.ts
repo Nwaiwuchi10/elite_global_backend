@@ -210,4 +210,55 @@ export class DepositService {
     const result = await this.depositModel.findByIdAndDelete(id).exec();
     if (!result) throw new NotFoundException('Deposit not found');
   }
+
+  // Get all deposits for a user
+  async getUserDeposits(userId: string) {
+    if (!userId) {
+      throw new NotFoundException('Invalid user ID');
+    }
+
+    const deposits = await this.depositModel
+      .find({ clientId: userId })
+      .populate('adminWalletId')
+      .populate('clientId')
+      .sort({ createdAt: -1 })
+      .exec();
+
+    const totalAmount = deposits.reduce((sum, dep) => sum + dep.amount, 0);
+
+    return {
+      totalAmount,
+      deposits,
+    };
+  }
+
+  async getUserDepositsy(userId: string) {
+    if (!userId) {
+      throw new NotFoundException('Invalid user ID');
+    }
+
+    return this.depositModel
+      .find({ clientId: userId })
+      .populate('adminWalletId')
+      .populate('clientId')
+      .sort({ createdAt: -1 })
+      .exec();
+  }
+  // deposit.service.ts
+  async getUserTotalDeposits(userId: string): Promise<number> {
+    const objectId = userId;
+    // new Types.ObjectId(userId);
+
+    const result = await this.depositModel.aggregate([
+      { $match: { clientId: objectId, depositStatus: 'Approved' } }, // Optional filter
+      {
+        $group: {
+          _id: null,
+          totalAmount: { $sum: '$amount' },
+        },
+      },
+    ]);
+
+    return result.length > 0 ? result[0].totalAmount : 0;
+  }
 }

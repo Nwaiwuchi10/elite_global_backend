@@ -39,4 +39,11 @@ export class InvestmentplanController {
   remove(@Param('id') id: string) {
     return this.investmentplanService.remove(id);
   }
+  @Patch(':id/interest-rate')
+  updateRate(
+    @Param('id') id: string,
+    @Body('interestRate') interestRate: number,
+  ) {
+    return this.investmentplanService.updateInterestRate(id, interestRate);
+  }
 }

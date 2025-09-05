@@ -12,6 +12,7 @@ import {
 } from 'src/usersinvestmentplan/entities/usersinvestmentplan.entity';
 import { MailService } from 'src/users/services/mai.service';
 import { User, UserSchema } from 'src/users/entities/user.entity';
+import { Deposit, DepositSchema } from 'src/deposit/entities/deposit.entity';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { User, UserSchema } from 'src/users/entities/user.entity';
       { name: Tradingaccount.name, schema: TradingaccountSchema },
       { name: Usersinvestmentplan.name, schema: UsersinvestmentplanSchema },
       { name: User.name, schema: UserSchema },
+      { name: Deposit.name, schema: DepositSchema },
     ]),
   ],
   controllers: [TradingaccountController],

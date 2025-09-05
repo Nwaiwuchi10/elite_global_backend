@@ -45,4 +45,40 @@ export class UsersController {
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }
+  ///
+  @Patch(':id/block/user')
+  block(@Param('id') id: string) {
+    return this.usersService.blockUser(id);
+  }
+
+  @Patch(':id/referral-balance')
+  updateReferralBalance(
+    @Param('id') id: string,
+    @Body('amount') amount: number,
+  ) {
+    return this.usersService.updateReferralBalance(id, amount);
+  }
+
+  @Patch(':id/referral-count')
+  updateReferralCount(@Param('id') id: string, @Body('count') count: number) {
+    return this.usersService.updateReferralCount(id, count);
+  }
+
+  @Get(':id/referrals')
+  getReferrals(@Param('id') id: string) {
+    return this.usersService.getUserReferrals(id);
+  }
+
+  @Patch(':id/change-password')
+  changePassword(
+    @Param('id') id: string,
+    @Body() dto: { oldPass: string; newPass: string },
+  ) {
+    return this.usersService.changePasswordJege(id, dto.oldPass, dto.newPass);
+  }
+
+  @Patch(':id/reset-password')
+  resetPassword(@Param('id') id: string, @Body('newPass') newPass: string) {
+    return this.usersService.resetPasswordJege(id, newPass);
+  }
 }

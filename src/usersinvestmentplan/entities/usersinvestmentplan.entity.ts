@@ -11,6 +11,19 @@ export class Usersinvestmentplan extends Document {
 
   @Prop({ required: true, default: 0 })
   amount: number;
+
+  @Prop({ default: false })
+  isPaused: boolean;
+
+  @Prop({ default: false })
+  isEnded: boolean;
+  @Prop({ required: false })
+  customInterestRate?: number;
+
+  @Prop({ type: Date, default: Date.now })
+  startDate: Date;
+  @Prop({ type: Date })
+  endDate: Date;
 }
 
 export const UsersinvestmentplanSchema =

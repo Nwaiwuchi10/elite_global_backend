@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { DepositService } from './deposit.service';
 import { ApproveDepositDto, CreateDepositDto } from './dto/create-deposit.dto';
@@ -46,5 +47,20 @@ export class DepositController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.depositService.remove(id);
+  }
+
+  @Get('user/:userId/all')
+  async getUserDeposits(@Param('userId') userId: string) {
+    return this.depositService.getUserDeposits(userId);
+  }
+  @Get('total/:userId')
+  async getUserTotalDeposits(@Param('userId') userId: string) {
+    if (!userId) {
+      throw new NotFoundException('Invalid user ID');
+    }
+
+    const totalDeposits =
+      await this.depositService.getUserTotalDeposits(userId);
+    return { userId, totalDeposits };
   }
 }

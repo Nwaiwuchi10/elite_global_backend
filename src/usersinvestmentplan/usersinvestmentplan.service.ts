@@ -37,13 +37,22 @@ export class UsersinvestmentplanService {
       throw new BadRequestException('Insufficient balance');
     }
 
+    // Deduct from balances
     tradingAcc.totalBalance -= amount;
     tradingAcc.availableBalance -= amount;
     await tradingAcc.save();
 
+    // Set investment dates
+    const startDate = new Date();
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + plan.duration);
+
     const userInvestment = new this.usersInvestmentPlanModel({
       clientId,
       investmentplanId: planId,
+      amount,
+      startDate,
+      endDate,
     });
     await userInvestment.save();
 
@@ -92,5 +101,54 @@ export class UsersinvestmentplanService {
       .findByIdAndDelete(id)
       .exec();
     if (!result) throw new NotFoundException('Users investment plan not found');
+  }
+
+  // usersinvestmentplan.service.ts
+  async pause(userId: string) {
+    return this.usersInvestmentPlanModel.findOneAndUpdate(
+      { clientId: userId },
+      { isPaused: true },
+      { new: true },
+    );
+  }
+
+  async end(userId: string) {
+    return this.usersInvestmentPlanModel.findOneAndUpdate(
+      { clientId: userId },
+      { isEnded: true },
+      { new: true },
+    );
+  }
+
+  async updateUserInvestmentPercent(userId: string, percent: number) {
+    const userInvestment = await this.usersInvestmentPlanModel.findOne({
+      clientId: userId,
+    });
+    if (!userInvestment) {
+      throw new NotFoundException('User investment not found');
+    }
+
+    userInvestment.customInterestRate = percent;
+    await userInvestment.save();
+    return { message: 'User investment percent updated', userInvestment };
+  }
+  async updateUserInterestRate(userId: string, interestRate: number) {
+    return this.usersInvestmentPlanModel.findOneAndUpdate(
+      { clientId: userId, isEnded: false },
+      { $set: { customInterestRate: interestRate } },
+      { new: true },
+    );
+  }
+  async getUserInvestments(userId: string) {
+    if (!userId) {
+      throw new NotFoundException('Invalid user ID');
+    }
+
+    return this.usersInvestmentPlanModel
+      .find({ clientId: userId })
+      .populate('investmentplanId')
+      .populate('clientId')
+      .sort({ createdAt: -1 })
+      .exec();
   }
 }

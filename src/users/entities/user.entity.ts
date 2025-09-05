@@ -29,6 +29,15 @@ export class User extends Document {
 
   @Prop({ default: 0 })
   referralBalance: number;
+
+  @Prop({ default: 0 })
+  referralCount: number; // total people referred
+
+  @Prop({ default: false })
+  isBlocked: boolean; // block login
+
+  @Prop({ default: false })
+  isAdmin: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

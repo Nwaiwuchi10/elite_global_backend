@@ -44,4 +44,12 @@ export class InvestmentplanService {
     if (!result) throw new NotFoundException(`Investment plan ${id} not found`);
     return { deleted: true };
   }
+
+  updateInterestRate(id: string, interestRate: number) {
+    return this.investmentplanModel.findByIdAndUpdate(
+      id,
+      { interestRate },
+      { new: true },
+    );
+  }
 }

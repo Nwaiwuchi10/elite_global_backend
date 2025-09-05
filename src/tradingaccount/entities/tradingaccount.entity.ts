@@ -11,6 +11,9 @@ export class Tradingaccount extends Document {
   availableBalance: number;
 
   @Prop({ default: 0 })
+  earnedFund: number;
+
+  @Prop({ default: 0 })
   totalBalance: number;
 
   @Prop({
