@@ -30,7 +30,7 @@ export class MailService {
     try {
       // 1️⃣ Send to user
       await this.transporter.sendMail({
-        from: `"Elite Trades" <${process.env.Mail_User}>`,
+        from: `"Wealth Globe Investment" <${process.env.Mail_User}>`,
         to: email,
         subject: 'Welcome to Our App 🚀',
         html: `
@@ -45,7 +45,7 @@ export class MailService {
 
       // 2️⃣ Send to admin
       await this.transporter.sendMail({
-        from: `"Elite Trades" <${process.env.Mail_User}>`,
+        from: `"Wealth Globe Investment" <${process.env.Mail_User}>`,
         to: this.adminEmail,
         subject: '📩 New User Signup Notification',
         html: `
@@ -70,7 +70,7 @@ export class MailService {
     try {
       // 1️⃣ Send to user
       await this.transporter.sendMail({
-        from: `"Elite Trades" <${process.env.Mail_User}>`,
+        from: `"Wealth Globe Investment" <${process.env.Mail_User}>`,
         to: email,
         subject: 'Login Alert',
         html: `
@@ -84,7 +84,7 @@ export class MailService {
 
       // 2️⃣ Send to admin
       await this.transporter.sendMail({
-        from: `"Elite Trades" <${process.env.Mail_User}>`,
+        from: `"Wealth Globe Investment" <${process.env.Mail_User}>`,
         to: this.adminEmail,
         subject: '🔔 User Login Alert',
         html: `
@@ -110,7 +110,7 @@ export class MailService {
     try {
       // User email
       await this.transporter.sendMail({
-        from: `"Elite Trades <${process.env.Mail_User}>`,
+        from: `"Wealth Globe Investment <${process.env.Mail_User}>`,
         to: email,
         subject: 'Deposit Request Received',
         html: `<h2>Hello ${firstName} ${lastName},</h2>
@@ -119,7 +119,7 @@ export class MailService {
 
       // Admin email
       await this.transporter.sendMail({
-        from: `"Bit Globe" <${process.env.Mail_User}>`,
+        from: `"Wealth Globe Investment" <${process.env.Mail_User}>`,
         to: this.adminEmail,
         subject: '🔔 New Deposit Request',
         html: `<h2>New Deposit Request</h2>
@@ -141,7 +141,7 @@ export class MailService {
     try {
       // User email
       await this.transporter.sendMail({
-        from: `"Elite Trades" <${process.env.Mail_User}>`,
+        from: `"Wealth Globe Investment" <${process.env.Mail_User}>`,
         to: email,
         subject: 'Deposit Approved ✅',
         html: `<h2>Hello ${firstName} ${lastName},</h2>
@@ -150,7 +150,7 @@ export class MailService {
 
       // Admin email
       await this.transporter.sendMail({
-        from: `"Elite Trades" <${process.env.Mail_User}>`,
+        from: `"Wealth Globe Investment" <${process.env.Mail_User}>`,
         to: this.adminEmail,
         subject: '✅ Deposit Approved',
         html: `<h2>Deposit Approved</h2>
@@ -174,7 +174,7 @@ export class MailService {
     try {
       // User email
       await this.transporter.sendMail({
-        from: `"Elite Trades" <${process.env.Mail_User}>`,
+        from: `"Wealth Globe Investment" <${process.env.Mail_User}>`,
         to: email,
         subject: 'Withdrawal Request Submitted',
         html: `<h2>Hello ${firstName} ${lastName},</h2>
@@ -183,7 +183,7 @@ export class MailService {
 
       // Admin email
       await this.transporter.sendMail({
-        from: `"Elite Trades" <${process.env.Mail_User}>`,
+        from: `"Wealth Globe Investment" <${process.env.Mail_User}>`,
         to: this.adminEmail,
         subject: '🔔 New Withdrawal Request',
         html: `<h2>New Withdrawal Request</h2>
@@ -207,7 +207,7 @@ export class MailService {
     try {
       // User email
       await this.transporter.sendMail({
-        from: `"Elite Trades" <${process.env.Mail_User}>`,
+        from: `"Wealth Globe Investment" <${process.env.Mail_User}>`,
         to: email,
         subject: 'Withdrawal Approved ✅',
         html: `<h2>Hello ${firstName} ${lastName},</h2>
@@ -217,7 +217,7 @@ export class MailService {
 
       // Admin email
       await this.transporter.sendMail({
-        from: `"Elite Trades" <${process.env.Mail_User}>`,
+        from: `"Wealth Globe Investment" <${process.env.Mail_User}>`,
         to: this.adminEmail,
         subject: '✅ Withdrawal Approved',
         html: `<h2>Withdrawal Approved</h2>
