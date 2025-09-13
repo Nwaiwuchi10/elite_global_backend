@@ -203,4 +203,36 @@ export class UsersService {
   //   user.password = await bcrypt.hash(newPass, 10);
   //   return user.save();
   // }
+
+  async increaseReferralBalance(userId: string, amount: number) {
+    const user = await this.UserModel.findById(userId);
+    if (!user) throw new NotFoundException('User not found');
+    if (amount <= 0)
+      throw new BadRequestException('Amount must be greater than 0');
+
+    user.referralBalance += amount;
+    await user.save();
+
+    return {
+      message: 'Referral balance increased',
+      balance: user.referralBalance,
+    };
+  }
+
+  async reduceReferralBalance(userId: string, amount: number) {
+    const user = await this.UserModel.findById(userId);
+    if (!user) throw new NotFoundException('User not found');
+    if (amount <= 0)
+      throw new BadRequestException('Amount must be greater than 0');
+    if (user.referralBalance < amount)
+      throw new BadRequestException('Insufficient referral balance');
+
+    user.referralBalance -= amount;
+    await user.save();
+
+    return {
+      message: 'Referral balance reduced',
+      balance: user.referralBalance,
+    };
+  }
 }

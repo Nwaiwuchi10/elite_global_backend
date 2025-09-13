@@ -261,4 +261,19 @@ export class DepositService {
 
     return result.length > 0 ? result[0].totalAmount : 0;
   }
+
+  async updateDepositAmount(
+    depositId: string,
+    amount: number,
+  ): Promise<Deposit> {
+    const deposit = await this.depositModel.findById(depositId);
+    if (!deposit) {
+      throw new NotFoundException('Deposit not found');
+    }
+
+    deposit.amount = amount;
+    await deposit.save();
+
+    return deposit;
+  }
 }

@@ -378,4 +378,34 @@ export class TradingaccountService {
       (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
     );
   }
+
+  async increaseAvailableBalance(clientId: string, amount: number) {
+    const account = await this.tradingAccModel.findOne({ clientId });
+    if (!account) {
+      throw new NotFoundException('Trading account not found');
+    }
+
+    account.availableBalance += amount;
+    account.totalBalance += amount;
+    await account.save();
+
+    return { message: 'Available balance increased', account };
+  }
+
+  async reduceAvailableBalance(clientId: string, amount: number) {
+    const account = await this.tradingAccModel.findOne({ clientId });
+    if (!account) {
+      throw new NotFoundException('Trading account not found');
+    }
+
+    if (account.availableBalance < amount) {
+      throw new NotFoundException('Insufficient balance');
+    }
+
+    account.availableBalance -= amount;
+    account.totalBalance -= amount;
+    await account.save();
+
+    return { message: 'Available balance reduced', account };
+  }
 }

@@ -132,4 +132,22 @@ export class TradingaccountController {
   ) {
     return this.tradingaccountService.reduceEarnedFund(userId, amount);
   }
+  @Patch(':clientId/increase-balance')
+  increaseBalance(
+    @Param('clientId') clientId: string,
+    @Body('amount') amount: number,
+  ) {
+    return this.tradingaccountService.increaseAvailableBalance(
+      clientId,
+      amount,
+    );
+  }
+
+  @Patch(':clientId/reduce-balance')
+  reduceBalance(
+    @Param('clientId') clientId: string,
+    @Body('amount') amount: number,
+  ) {
+    return this.tradingaccountService.reduceAvailableBalance(clientId, amount);
+  }
 }

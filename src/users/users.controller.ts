@@ -81,4 +81,20 @@ export class UsersController {
   resetPassword(@Param('id') id: string, @Body('newPass') newPass: string) {
     return this.usersService.resetPasswordJege(id, newPass);
   }
+
+  @Patch(':id/referral/increase')
+  increaseReferralBalance(
+    @Param('id') id: string,
+    @Body('amount') amount: number,
+  ) {
+    return this.usersService.increaseReferralBalance(id, amount);
+  }
+
+  @Patch(':id/referral/reduce')
+  reduceReferralBalance(
+    @Param('id') id: string,
+    @Body('amount') amount: number,
+  ) {
+    return this.usersService.reduceReferralBalance(id, amount);
+  }
 }

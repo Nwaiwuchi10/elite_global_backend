@@ -63,4 +63,12 @@ export class DepositController {
       await this.depositService.getUserTotalDeposits(userId);
     return { userId, totalDeposits };
   }
+
+  @Patch(':depositId/update-amount')
+  updateAmount(
+    @Param('depositId') depositId: string,
+    @Body('amount') amount: number,
+  ) {
+    return this.depositService.updateDepositAmount(depositId, amount);
+  }
 }
