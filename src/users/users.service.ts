@@ -57,16 +57,16 @@ export class UsersService {
 
     await newUser.save();
 
-    try {
-      await this.mailService.sendSignupMail(
-        email,
-        firstName,
-        lastName,
-        password,
-      );
-    } catch (error) {
-      throw new Error(`Failed to send email to ${email}`);
-    }
+    // try {
+    //   await this.mailService.sendSignupMail(
+    //     email,
+    //     firstName,
+    //     lastName,
+    //     password,
+    //   );
+    // } catch (error) {
+    //   throw new Error(`Failed to send email to ${email}`);
+    // }
 
     return {
       userId: newUser._id,
@@ -93,16 +93,16 @@ export class UsersService {
     }
 
     //Generate JWT tokens
-    try {
-      await this.mailService.sendLoginMail(
-        user.email,
-        user.firstName,
-        user.lastName,
-        user.password,
-      );
-    } catch (error) {
-      throw new Error(`Failed to send email to ${email}`);
-    }
+    // try {
+    //   await this.mailService.sendLoginMail(
+    //     user.email,
+    //     user.firstName,
+    //     user.lastName,
+    //     user.password,
+    //   );
+    // } catch (error) {
+    //   throw new Error(`Failed to send email to ${email}`);
+    // }
     return {
       userId: user._id,
       email: user.email,

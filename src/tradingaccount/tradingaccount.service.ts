@@ -75,15 +75,15 @@ export class TradingaccountService {
     await acc.save();
 
     // Send withdrawal requested notification
-    const user = await this.userModel.findById(clientId);
-    if (user) {
-      await this.mailService.sendWithdrawalRequested(
-        user.email,
-        user.firstName,
-        user.lastName,
-        amount,
-      );
-    }
+    // const user = await this.userModel.findById(clientId);
+    // if (user) {
+    //   await this.mailService.sendWithdrawalRequested(
+    //     user.email,
+    //     user.firstName,
+    //     user.lastName,
+    //     amount,
+    //   );
+    // }
 
     return { message: 'Withdrawal request submitted', account: acc };
   }
@@ -119,15 +119,15 @@ export class TradingaccountService {
 
     await acc.save();
     // Send withdrawal requested notification
-    const user = await this.userModel.findById(clientId);
-    if (user) {
-      await this.mailService.sendWithdrawalRequested(
-        user.email,
-        user.firstName,
-        user.lastName,
-        amount,
-      );
-    }
+    // const user = await this.userModel.findById(clientId);
+    // if (user) {
+    //   await this.mailService.sendWithdrawalRequested(
+    //     user.email,
+    //     user.firstName,
+    //     user.lastName,
+    //     amount,
+    //   );
+    // }
     return { message: 'Withdrawal request submitted', account: acc };
   }
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
