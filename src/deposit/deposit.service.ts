@@ -31,15 +31,15 @@ export class DepositService {
     const deposit = new this.depositModel(createDepositDto);
 
     await deposit.save();
-    // const user = await this.userModel.findById(deposit.clientId);
-    // if (user) {
-    //   await this.mailService.sendDepositCreated(
-    //     user.email,
-    //     user.firstName,
-    //     user.lastName,
-    //     deposit.amount,
-    //   );
-    // }
+    const user = await this.userModel.findById(deposit.clientId);
+    if (user) {
+      await this.mailService.sendDepositCreated(
+        user.email,
+        user.firstName,
+        user.lastName,
+        deposit.amount,
+      );
+    }
     return deposit;
   }
 
@@ -134,14 +134,14 @@ export class DepositService {
       }
     }
     // Send deposit approved notification
-    // if (user) {
-    //   await this.mailService.sendDepositApproved(
-    //     user.email,
-    //     user.firstName,
-    //     user.lastName,
-    //     deposit.amount,
-    //   );
-    // }
+    if (user) {
+      await this.mailService.sendDepositApproved(
+        user.email,
+        user.firstName,
+        user.lastName,
+        deposit.amount,
+      );
+    }
     // 5. Final response
     return {
       message: 'Deposit approved & Trading account updated',

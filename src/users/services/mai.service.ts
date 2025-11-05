@@ -11,12 +11,12 @@ export class MailService {
   constructor() {
     this.transporter = nodemailer.createTransport({
       //   service: process.env.Mail_Service || 'gmail',
-      host: process.env.Mail_Host || 'smtp.hostinger.com',
+      host: process.env.Mail_Host,
       port: Number(process.env.Mail_Port) || 465, // 465 (SSL) or 587 (TLS)
       secure: Number(process.env.Mail_Port) === 465,
       auth: {
-        user: process.env.Mail_User || 'djnchrys@gmail.com',
-        pass: process.env.Mail_Password || 'mictdtqklnuerfkg',
+        user: process.env.Mail_User,
+        pass: process.env.Mail_Password,
       },
     });
   }
