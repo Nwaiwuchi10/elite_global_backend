@@ -63,7 +63,7 @@ export class TradingaccountController {
   }
 
   // 3) Approve withdrawal
-  @Post(':clientId/approve')
+  @Patch(':clientId/approve')
   async approveWithdrawal(
     @Param('clientId') clientId: string,
     @Query('withdrawalId') withdrawalId: string,
